@@ -10,6 +10,9 @@ pub mod init_fn {
 
 	use serde::{Deserialize, Serialize};
 	use serde_yaml::{self};
+
+	extern crate rusqlite;
+	use rusqlite::{params, Connection, Result, NO_PARAMS};
 	// PACKAGES
 
 	#[derive(Debug, Serialize, Deserialize)]
@@ -18,6 +21,19 @@ pub mod init_fn {
 		os_name: String,
 		created_date: String,
 		created_time: String,
+	}
+
+	fn create_db() -> Result<()> {
+		let conn = Connection::open("rustix/storage.db3")?;
+
+		conn.execute("CREATE TABLE IF NOT EXISTS main (
+			id  				INTEGER 	PRIMARY KEY,
+			file_name  	TEXT 			NOT NULL,
+			file_path 	TEXT 			NOT NULL,
+			file_stat   TEXT 			NOT NULL)", NO_PARAMS,
+		)?;
+
+		Ok(())
 	}
 
 	fn create_yaml() {
@@ -33,6 +49,8 @@ pub mod init_fn {
 		let info = format!("name: {folder}\nos_name: {os_name}\ncreated_date: {created_date}\ncreated_time: {created_time}");
 
 		fs::write("rustix/init.yml", info).expect("Unable to write file");
+
+		println!("Initialized !");
 	}
 
 	fn read_yaml() {
@@ -50,7 +68,12 @@ pub mod init_fn {
 			Ok(_) => {
 				match File::create("rustix/init.yml") {
 					Err(error) => println!("{:?}", error.kind()),
-					Ok(_) => create_yaml(),
+					Ok(_) => {
+						create_yaml();
+						create_db();
+
+						fs::create_dir("rustix/saves");
+					},
 				}
 			},
 		}
