@@ -16,9 +16,15 @@ fn main() {
 	match first_arg.as_ref() {
 		"init" => init_fn::start(),
 		"add" => {
-			let second_arg = std::env::args().nth(1).expect("no pattern given");
+			let args: Vec<_> = std::env::args().collect();
 
-			add_fn::start();
+			if args.len() > 2 {
+				let second_arg = std::env::args().nth(2).expect("no pattern given");
+
+				add_fn::start();
+			}
+			else
+			{ println!("where is third argument ?"); }
 		},
 		"exit" => return,
 		_ => {
