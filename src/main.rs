@@ -21,7 +21,10 @@ fn main() {
 			if args.len() > 2 {
 				let second_arg = std::env::args().nth(2).expect("no pattern given");
 
-				add_fn::start();
+				let fl_exist = std::path::Path::new(&second_arg).exists();
+
+				if fl_exist == true { add_fn::start(&second_arg); }
+				else { println!("not exist"); }
 			}
 			else
 			{ println!("where is third argument ?"); }
