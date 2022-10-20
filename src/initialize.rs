@@ -28,7 +28,7 @@ pub mod init_fn {
 
 		conn.execute("CREATE TABLE IF NOT EXISTS main (
 			id  				INTEGER 	PRIMARY KEY,
-			file_path  	TEXT 			NOT NULL,
+			file_path  	TEXT 			UNIQUE,
 			file_name  	TEXT 			NOT NULL,
 			saved_date  TEXT      NOT NULL,
 			saved_time 	TEXT      NOT NULL,
