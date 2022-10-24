@@ -27,12 +27,13 @@ pub mod init_fn {
 		let conn = Connection::open("rustix/storage.db3")?;
 
 		conn.execute("CREATE TABLE IF NOT EXISTS main (
-			id  				INTEGER 	PRIMARY KEY,
-			file_path  	TEXT 			UNIQUE,
-			file_name  	TEXT 			NOT NULL,
-			saved_date  TEXT      NOT NULL,
-			saved_time 	TEXT      NOT NULL,
-			main        TEXT      NOT NULL)", NO_PARAMS,
+			id INTEGER PRIMARY KEY,
+			file_path TEXT NOT NULL,
+			file_name TEXT NOT NULL,
+			saved_date TEXT NOT NULL,
+			saved_time TEXT NOT NULL,
+			main TEXT NOT NULL,
+			name TEXT	UNIQUE)", NO_PARAMS,
 		)?;
 
 		conn.close();

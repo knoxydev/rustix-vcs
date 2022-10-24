@@ -9,8 +9,6 @@ pub mod add_fn {
 	
 	extern crate rusqlite;
 	use rusqlite::{params, Connection, Result, NO_PARAMS};
-
-	extern crate base64;
 	// PACKAGES
 
 	#[derive(Debug)]
@@ -20,10 +18,15 @@ pub mod add_fn {
 		file_name: String,
 		saved_date: String,
 		saved_time: String,
-		main: String
+		main: String,
+		name: String
 	}
 
-	//&base64::encode(String::from(txt).into_bytes());
+	#[derive(Debug)]
+	struct DBStr {
+		id: i64,
+		name: String
+	}
 
 
 	// FUNC for UPDATE DATABASE - CLEAR DB and THEN INSERT NEW DB
@@ -32,18 +35,19 @@ pub mod add_fn {
 		conn.execute("DROP TABLE IF EXISTS main", NO_PARAMS)?;
 
 		conn.execute("CREATE TABLE IF NOT EXISTS main (
-			id  				INTEGER 	PRIMARY KEY,
-			file_path  	TEXT 			UNIQUE,
-			file_name  	TEXT 			NOT NULL,
-			saved_date  TEXT      NOT NULL,
-			saved_time 	TEXT      NOT NULL,
-			main        TEXT      NOT NULL)", NO_PARAMS,
+			id INTEGER PRIMARY KEY,
+			file_path TEXT NOT NULL,
+			file_name TEXT NOT NULL,
+			saved_date TEXT NOT NULL,
+			saved_time TEXT NOT NULL,
+			main TEXT NOT NULL,
+			name TEXT	UNIQUE)", NO_PARAMS,
 		)?;
 
 		for x in base {
 			conn.execute("INSERT INTO main (
-				id, file_path, file_name, saved_date, saved_time, main) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-				params![x.id, x.file_path, x.file_name, x.saved_date, x.saved_time, x.main],
+				id, file_path, file_name, saved_date, saved_time, main, name) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+				params![x.id, x.file_path, x.file_name, x.saved_date, x.saved_time, x.main, x.name],
 			)?;
 		}
 
@@ -65,6 +69,7 @@ pub mod add_fn {
 				saved_date: row.get(3)?,
 				saved_time: row.get(4)?,
 				main: row.get(5)?,
+				name: row.get(6)?,
 			})
 		})?;
 		
@@ -84,10 +89,26 @@ pub mod add_fn {
 	}
 
 
-	pub fn start(file_path: &String) {
+	pub fn start(file_path: &String, unq_name: &String) {
 		let name = Path::new(&file_path).file_name().unwrap();
 		let now: DateTime<Local> = Local::now();
 		let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
+
+		// fn check_unique_name() -> Result<(), Box<dyn Error>> {
+		// 	let conn = Connection::open("rustix/storage.db3")?;
+		// 	let mut stmt = conn.prepare("SELECT id, name FROM person")?;
+		// 	let db_iter = stmt.query_map(NO_PARAMS, |row| {
+		// 		Ok(DBStr { id: row.get(0)?, name: row.get(1)?, })
+		// 	})?;
+
+		// 	for x in db_iter.into_iter() {
+		// 		println!("- {:?}", x.unwrap());
+		// 	}
+
+		// 	Ok(())
+		// }
+
+		//check_unique_name();
 
 		let file_info = FileStr {
 			id: 0,
@@ -95,7 +116,8 @@ pub mod add_fn {
 			file_name: name.to_os_string().into_string().unwrap(),
 			saved_date: String::from(Utc::now().format("%d.%m.%Y").to_string()),
 			saved_time: String::from(&time),
-			main: "false".to_string()
+			main: "false".to_string(),
+			name: unq_name.to_string()
 		};
 
 		rewrite_db(rewrite_id(file_info).unwrap());

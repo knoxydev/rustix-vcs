@@ -18,12 +18,13 @@ fn main() {
 		"add" => {
 			let args: Vec<_> = std::env::args().collect();
 
-			if args.len() > 2 {
-				let second_arg = std::env::args().nth(2).expect("no pattern given");
+			if args.len() > 3 {
+				let scd_arg = std::env::args().nth(2).expect("no pattern given");
+				let thd_arg = std::env::args().nth(3).expect("no pattern given");
 
-				let fl_exist = std::path::Path::new(&second_arg).exists();
+				let fl_exist = std::path::Path::new(&scd_arg).exists();
 
-				if fl_exist == true { add_fn::start(&second_arg); }
+				if fl_exist == true { add_fn::start(&scd_arg, &thd_arg); }
 				else { println!("not exist"); }
 			}
 			else
