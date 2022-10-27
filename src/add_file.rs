@@ -114,7 +114,6 @@ pub mod add_fn {
 			let mut stmt = conn.prepare("SELECT id, name FROM main")?;
 			let mut base = stmt.query_map(NO_PARAMS, |row| { Ok(DBStr { id: row.get(0)?, name: row.get(1)?, }) })?;
 
-
 			let mut x: bool = false;
 			for e in base.into_iter() {
 				if &e.unwrap().name == unq {

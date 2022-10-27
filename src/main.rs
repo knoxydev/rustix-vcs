@@ -1,13 +1,15 @@
 #![allow(warnings)]
 
-// PACKAGES
-
 // MODULES
 mod initialize;
 pub use crate::initialize::init_fn;
 
 mod add_file;
 pub use crate::add_file::add_fn;
+
+mod select;
+pub use crate::select::select_fn;
+// MODULES
 
 
 fn main() {
@@ -29,6 +31,15 @@ fn main() {
 			}
 			else
 			{ println!("where is third argument ?"); }
+		},
+		"select" => {
+			let scd_arg = std::env::args().nth(2).expect("no pattern given");
+			select_fn::start(scd_arg);
+		},
+		"commands" => {
+			println!("\nrustix-vcs init -> command to initialize the project");
+			println!("\nrustix-vcs add 'path_to_file' -> command to save the file");
+			println!("\nrustix-vcs select 'save_name' -> command to insert saved content into a file\n");
 		},
 		"exit" => return,
 		_ => {
