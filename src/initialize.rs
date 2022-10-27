@@ -32,7 +32,6 @@ pub mod init_fn {
 			file_name TEXT NOT NULL,
 			saved_date TEXT NOT NULL,
 			saved_time TEXT NOT NULL,
-			main TEXT NOT NULL,
 			name TEXT	UNIQUE)", NO_PARAMS,
 		)?;
 

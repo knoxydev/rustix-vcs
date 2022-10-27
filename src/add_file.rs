@@ -2,6 +2,8 @@ pub mod add_fn {
 	#![allow(warnings)]
 
 	// PACKAGES
+	use std::fs;
+	use std::io::Write;
 	use std::path::Path;
 	use std::error::Error;
 
@@ -18,7 +20,6 @@ pub mod add_fn {
 		file_name: String,
 		saved_date: String,
 		saved_time: String,
-		main: String,
 		name: String
 	}
 
@@ -40,14 +41,13 @@ pub mod add_fn {
 			file_name TEXT NOT NULL,
 			saved_date TEXT NOT NULL,
 			saved_time TEXT NOT NULL,
-			main TEXT NOT NULL,
 			name TEXT	UNIQUE)", NO_PARAMS,
 		)?;
 
 		for x in base {
 			conn.execute("INSERT INTO main (
-				id, file_path, file_name, saved_date, saved_time, main, name) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-				params![x.id, x.file_path, x.file_name, x.saved_date, x.saved_time, x.main, x.name],
+				id, file_path, file_name, saved_date, saved_time, name) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+				params![x.id, x.file_path, x.file_name, x.saved_date, x.saved_time, x.name],
 			)?;
 		}
 
@@ -68,8 +68,7 @@ pub mod add_fn {
 				file_name: row.get(2)?,
 				saved_date: row.get(3)?,
 				saved_time: row.get(4)?,
-				main: row.get(5)?,
-				name: row.get(6)?,
+				name: row.get(5)?,
 			})
 		})?;
 		
@@ -89,26 +88,47 @@ pub mod add_fn {
 	}
 
 
+	// COPY FILE'S CONTENT and CREATE SAVE
+	fn create_save(unq_name: &String, file_path: &String) {
+		fn copy_file(file_path: &String) -> String { return fs::read_to_string(file_path).expect("Should have been able to read the file"); }
+
+		let file_name = format!("rustix/saves/{:02}.txt", unq_name);
+		let data = copy_file(&file_path);
+		let new_data = data.as_bytes();
+
+    let mut f = fs::File::create(file_name).expect("Unable to create file");
+    f.write_all(new_data).expect("Unable to write data");
+	}
+
+
+	// START POINT
 	pub fn start(file_path: &String, unq_name: &String) {
 		let name = Path::new(&file_path).file_name().unwrap();
 		let now: DateTime<Local> = Local::now();
 		let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
 
-		// fn check_unique_name() -> Result<(), Box<dyn Error>> {
-		// 	let conn = Connection::open("rustix/storage.db3")?;
-		// 	let mut stmt = conn.prepare("SELECT id, name FROM person")?;
-		// 	let db_iter = stmt.query_map(NO_PARAMS, |row| {
-		// 		Ok(DBStr { id: row.get(0)?, name: row.get(1)?, })
-		// 	})?;
 
-		// 	for x in db_iter.into_iter() {
-		// 		println!("- {:?}", x.unwrap());
-		// 	}
+		fn check_unique_name(unq: &String) -> Result<bool, Box<dyn Error>>
+		{
+			let conn = Connection::open("rustix/storage.db3")?;
+			let mut stmt = conn.prepare("SELECT id, name FROM main")?;
+			let mut base = stmt.query_map(NO_PARAMS, |row| { Ok(DBStr { id: row.get(0)?, name: row.get(1)?, }) })?;
 
-		// 	Ok(())
-		// }
 
-		//check_unique_name();
+			let mut x: bool = false;
+			for e in base.into_iter() {
+				if &e.unwrap().name == unq {
+					println!("Such a name already exists !");
+					x = true;
+
+					break;
+				} else { continue; }
+			}
+
+			Ok(x)
+		}
+		if check_unique_name(&unq_name).unwrap() == true { return; }
+
 
 		let file_info = FileStr {
 			id: 0,
@@ -116,10 +136,10 @@ pub mod add_fn {
 			file_name: name.to_os_string().into_string().unwrap(),
 			saved_date: String::from(Utc::now().format("%d.%m.%Y").to_string()),
 			saved_time: String::from(&time),
-			main: "false".to_string(),
 			name: unq_name.to_string()
 		};
 
+		create_save(&unq_name, &file_path);
 		rewrite_db(rewrite_id(file_info).unwrap());
 
 		println!("Added !");
