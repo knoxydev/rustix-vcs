@@ -23,22 +23,21 @@ pub mod init_fn {
 		created_time: String,
 	}
 
+
 	fn create_db() -> Result<()> {
 		let conn = Connection::open("rustix/storage.db3")?;
 
 		conn.execute("CREATE TABLE IF NOT EXISTS main (
 			id INTEGER PRIMARY KEY,
-			file_path TEXT NOT NULL,
-			file_name TEXT NOT NULL,
-			saved_date TEXT NOT NULL,
-			saved_time TEXT NOT NULL,
-			name TEXT	UNIQUE)", NO_PARAMS,
+			file_path TEXT NOT NULL, save_name TEXT UNIQUE,
+			saved_date TEXT NOT NULL, saved_time TEXT NOT NULL)", NO_PARAMS,
 		)?;
 
 		conn.close();
 
 		Ok(())
 	}
+
 
 	fn create_yaml() {
 		let cwd = env::current_dir().unwrap();
@@ -57,12 +56,14 @@ pub mod init_fn {
 		println!("Initialized !");
 	}
 
+
 	fn read_yaml() {
 		let f = File::open("rustix/init.yml").expect("Could not open file.");
 		let mut scrape_config: Config = serde_yaml::from_reader(f).expect("Couldn't read");
 		println!("{:?}", scrape_config);
 	}
 
+	// START POINT
 	pub fn start() {
 		match fs::create_dir("rustix") {
 			Err(why) => {

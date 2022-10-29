@@ -7,8 +7,14 @@ pub use crate::initialize::init_fn;
 mod add_file;
 pub use crate::add_file::add_fn;
 
+mod delete;
+pub use crate::delete::delete_fn;
+
 mod select;
 pub use crate::select::select_fn;
+
+mod print;
+pub use crate::print::print_fn;
 // MODULES
 
 
@@ -32,6 +38,10 @@ fn main() {
 			else
 			{ println!("where is third argument ?"); }
 		},
+		"delete" => {
+			let scd_arg = std::env::args().nth(2).expect("no pattern given");
+			delete_fn::start(scd_arg);
+		},
 		"select" => {
 			let scd_arg = std::env::args().nth(2).expect("no pattern given");
 			select_fn::start(scd_arg);
@@ -41,6 +51,7 @@ fn main() {
 			println!("\nrustix-vcs add 'path_to_file' -> command to save the file");
 			println!("\nrustix-vcs select 'save_name' -> command to insert saved content into a file\n");
 		},
+		"print" => print_fn::start(),
 		"exit" => return,
 		_ => {
 			println!("Incorrect command !");
