@@ -48,11 +48,6 @@ fn main() {
 			let scd_arg = std::env::args().nth(2).expect("no pattern given");
 			select_fn::start(scd_arg);
 		},
-		"commands" => {
-			println!("\nrustix-vcs init -> command to initialize the project");
-			println!("\nrustix-vcs add 'path_to_file' -> command to save the file");
-			println!("\nrustix-vcs select 'save_name' -> command to insert saved content into a file\n");
-		},
 		"print" => print_fn::start(0),
 		"log" => print_fn::start(1),
 		"info" => print_fn::read_yaml(),
