@@ -12,4 +12,6 @@ Don't forget to add to the PATH (environment) to use rustix-vcs from any folder
 - ```rustix-vcs delete save_name``` - command to delete the save.
 - ```rustix-vcs select save_name``` - command to insert saved content into a file.
 - ```rustix-vcs print``` - command to display all saves and info about project.
+- ```rustix-vcs info``` - command to view information about the initialized project.
+- ```rustix-vcs log``` - command to view logs.
 
