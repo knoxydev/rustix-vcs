@@ -57,19 +57,10 @@ pub mod init_fn {
 	}
 
 
-	fn read_yaml() {
-		let f = File::open("rustix/init.yml").expect("Could not open file.");
-		let mut scrape_config: Config = serde_yaml::from_reader(f).expect("Couldn't read");
-		println!("{:?}", scrape_config);
-	}
-
 	// START POINT
 	pub fn start() {
 		match fs::create_dir("rustix") {
-			Err(why) => {
-				println!("{:?} !", why.kind());
-				read_yaml();
-			},
+			Err(why) => println!("{:?} !", why.kind()),
 			Ok(_) => {
 				match File::create("rustix/log.txt") {
 					Err(error) => println!("{:?}", error.kind()),

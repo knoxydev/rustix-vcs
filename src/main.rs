@@ -54,6 +54,7 @@ fn main() {
 			println!("\nrustix-vcs select 'save_name' -> command to insert saved content into a file\n");
 		},
 		"print" => print_fn::start(),
+		"info" => print_fn::start(),
 		"exit" => return,
 		_ => {
 			println!("Incorrect command !");
