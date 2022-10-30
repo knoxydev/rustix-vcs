@@ -4,6 +4,7 @@ pub mod print_fn {
 	// PACKAGES
 	use std::fs::File;
 	use std::error::Error;
+	use std::io::{prelude::*, BufReader};
 
 	extern crate rusqlite;
 	use rusqlite::{params, Connection, Result, NO_PARAMS};
@@ -30,7 +31,16 @@ pub mod print_fn {
 	}
 
 
-	fn read_yaml() {
+	fn show_log() -> Result<(), std::io::Error> {
+		let file = File::open("rustix/log.txt")?;
+		let reader = BufReader::new(file);
+		for line in reader.lines() { println!("{}", line?); }
+
+		Ok(())
+	}
+
+
+	pub fn read_yaml() {
 		let f = File::open("rustix/init.yml").expect("Could not open file.");
 		let mut data: Config = serde_yaml::from_reader(f).expect("Couldn't read");
 		
@@ -64,9 +74,12 @@ pub mod print_fn {
 
 
 	// START POINT
-	pub fn start() {
-		crate::log::logger::start("PRINT ".to_string());
-		read_yaml();
-		print_db();
+	pub fn start(x: i64) {
+		if x == 1 { show_log(); }
+		else {
+			crate::log::logger::start("PRINT ".to_string());
+			read_yaml();
+			print_db();
+		}
 	}
 }
