@@ -82,6 +82,8 @@ pub mod delete_fn {
 
 	// START POINT
 	pub fn start(save_name: String) {
+		crate::log::logger::start("DELETE".to_string());
+
 		update_db(delete_save(save_name).unwrap());
 	}
 }

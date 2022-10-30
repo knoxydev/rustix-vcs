@@ -43,5 +43,8 @@ pub mod print_fn {
 
 
 	// START POINT
-	pub fn start() { print_db(); }
+	pub fn start() {
+		crate::log::logger::start("PRINT ".to_string());
+		print_db();
+	}
 }

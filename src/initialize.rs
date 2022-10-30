@@ -71,15 +71,23 @@ pub mod init_fn {
 				read_yaml();
 			},
 			Ok(_) => {
-				match File::create("rustix/init.yml") {
+				match File::create("rustix/log.txt") {
 					Err(error) => println!("{:?}", error.kind()),
-					Ok(_) => {
-						create_yaml();
-						create_db();
+					Ok(_) =>
+					{
+						
+						match File::create("rustix/init.yml") {
+							Err(error) => println!("{:?}", error.kind()),
+							Ok(_) => {
+								create_yaml();
+								create_db();
 
-						fs::create_dir("rustix/saves");
+								fs::create_dir("rustix/saves");
+							},
+						}
+
 					},
-				}
+				}	
 			},
 		}
 	}

@@ -68,6 +68,8 @@ pub mod select_fn {
 
 	// START POINT
 	pub fn start(save_name: String) {
+		crate::log::logger::start("SELECT".to_string());
+
 		let db_str = check_save_exist(&save_name).unwrap();
 		if db_str[1] == "0" { return println!("there is no save with this name !"); }
 

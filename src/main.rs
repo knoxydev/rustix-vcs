@@ -15,6 +15,8 @@ pub use crate::select::select_fn;
 
 mod print;
 pub use crate::print::print_fn;
+
+mod log;
 // MODULES
 
 

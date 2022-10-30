@@ -96,6 +96,8 @@ pub mod add_fn {
 
 	// START POINT
 	pub fn start(file_path: &String, unq_name: &String) {
+		crate::log::logger::start("ADD   ".to_string());
+
 		let now: DateTime<Local> = Local::now();
 		let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
 
