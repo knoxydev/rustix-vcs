@@ -19,7 +19,7 @@ cargo build --release
 
 ## Installation
 
-You can download the .exe file or the source code on the page at the link - github.com/nkr413/rustix-vcs/releases
+You can download the .exe file or the source code on the [releases page](github.com/nkr413/rustix-vcs/releases)
 
 ## Usage
 
