@@ -2,6 +2,25 @@
 
 ![rustix visual](https://github.com/nkr413/rustix-vcs/blob/main/docs/pics/rustix-visual-1.png)
 
+## Compiling
+
+First, you'll want to check out this repository
+
+```
+git clone https://github.com/rust-lang/cargo
+cd cargo
+```
+
+With `cargo` already installed, you can simply run:
+
+```
+cargo build --release
+```
+
+## Installation
+
+You can download the .exe file or the source code on the page at the link - github.com/nkr413/rustix-vcs/releases
+
 ## Usage
 
 Don't forget to add to the PATH (environment) to use rustix-vcs from any folder
