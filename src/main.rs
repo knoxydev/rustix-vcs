@@ -1,7 +1,7 @@
 #![allow(warnings)]
 
 // PACKAGES
-use std::process;
+use std::io;
 
 // MODULES
 mod initialize;
@@ -31,7 +31,9 @@ fn main() {
 			println!("You should enter arguments to use the program.\n");
 
 			print_fn::print_commands();
-			process::exit(1);
+
+			io::stdin().read_line(&mut String::new()).unwrap();
+			return;
 		}
 	}
 
