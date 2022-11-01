@@ -31,6 +31,19 @@ pub mod print_fn {
 	}
 
 
+	pub fn print_commands() {
+		println!("Commands:\n");
+
+		println!("rustix-vcs init\n  command to initialize the project\n");
+		println!("rustix-vcs add src/main.js save_name\n  command to save the file.\n");
+		println!("rustix-vcs delete save_name\n  command to delete the save.\n");
+		println!("rustix-vcs select save_name\n  command to insert saved content into a file.\n");
+		println!("rustix-vcs print\n  command to display all saves and info about project.\n");
+		println!("rustix-vcs info\n  command to view information about the initialized project.\n");
+		println!("rustix-vcs log\n  command to view logs.\n");
+	}
+
+
 	fn show_log() -> Result<(), std::io::Error> {
 		let file = File::open("rustix/log.txt")?;
 		let reader = BufReader::new(file);

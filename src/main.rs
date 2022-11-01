@@ -1,5 +1,8 @@
 #![allow(warnings)]
 
+// PACKAGES
+use std::process;
+
 // MODULES
 mod initialize;
 pub use crate::initialize::init_fn;
@@ -21,6 +24,17 @@ mod log;
 
 
 fn main() {
+	{
+		let args: Vec<_> = std::env::args().collect();
+
+		if args.len() == 1 {
+			println!("You should enter arguments to use the program.\n");
+
+			print_fn::print_commands();
+			process::exit(1);
+		}
+	}
+
 	let first_arg = std::env::args().nth(1).expect("no pattern given");
 
 	match first_arg.as_ref() {
@@ -51,6 +65,7 @@ fn main() {
 		"print" => print_fn::start(0),
 		"log" => print_fn::start(1),
 		"info" => print_fn::read_yaml(),
+		"Commands" => print_fn::print_commands(),
 		"exit" => return,
 		_ => {
 			println!("Incorrect command !");
