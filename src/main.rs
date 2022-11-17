@@ -20,6 +20,8 @@ mod print;
 pub use crate::print::print_fn;
 
 mod log;
+
+mod time;
 // MODULES
 
 
@@ -67,7 +69,7 @@ fn main() {
 		"print" => print_fn::start(0),
 		"log" => print_fn::start(1),
 		"info" => print_fn::read_yaml(),
-		"Commands" => print_fn::print_commands(),
+		"cmd" => print_fn::print_commands(),
 		"exit" => return,
 		_ => {
 			println!("Incorrect command !");

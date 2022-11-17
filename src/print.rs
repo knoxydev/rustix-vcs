@@ -40,6 +40,7 @@ pub mod print_fn {
 		println!("rustix-vcs select save_name\n  command to insert saved content into a file.\n");
 		println!("rustix-vcs print\n  command to display all saves and info about project.\n");
 		println!("rustix-vcs info\n  command to view information about the initialized project.\n");
+		println!("rustix-vcs cmd\n  command to display all commands.\n");
 		println!("rustix-vcs log\n  command to view logs.\n");
 	}
 

@@ -6,8 +6,6 @@ pub mod add_fn {
 	use std::io::Write;
 	use std::path::Path;
 	use std::error::Error;
-
-	use chrono::{Local, DateTime, Utc, Timelike};
 	
 	extern crate rusqlite;
 	use rusqlite::{params, Connection, Result, NO_PARAMS};
@@ -97,10 +95,10 @@ pub mod add_fn {
 	// START POINT
 	pub fn start(file_path: &String, unq_name: &String) {
 		crate::log::logger::start("ADD   ".to_string());
+		let TIME_DATE: [String; 2] = crate::time::time_fn::start();
 
-		let now: DateTime<Local> = Local::now();
-		let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
-
+		//let now: DateTime<Local> = Local::now();
+		//let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
 
 		fn check_unique_name(unq: &String) -> Result<bool, Box<dyn Error>>
 		{
@@ -127,8 +125,8 @@ pub mod add_fn {
 			id: 0,
 			file_path: file_path.to_string(),
 			save_name: unq_name.to_string(),
-			saved_date: String::from(Utc::now().format("%d.%m.%Y").to_string()),
-			saved_time: String::from(&time)
+			saved_date: TIME_DATE[0].to_string(),
+			saved_time: TIME_DATE[1].to_string()
 		};
 
 		create_save(&unq_name, &file_path);
