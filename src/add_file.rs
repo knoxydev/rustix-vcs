@@ -97,9 +97,6 @@ pub mod add_fn {
 		crate::log::logger::start("ADD   ".to_string());
 		let TIME_DATE: [String; 2] = crate::time::time_fn::start();
 
-		//let now: DateTime<Local> = Local::now();
-		//let time = format!("{:02}:{:02}:{:02}", now.hour(), now.minute(), now.second());
-
 		fn check_unique_name(unq: &String) -> Result<bool, Box<dyn Error>>
 		{
 			let conn = Connection::open("rustix/storage.db3")?;
