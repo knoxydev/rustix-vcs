@@ -2,6 +2,9 @@
 name = "rustix-vcs"
 version = "0.1.0"
 edition = "2021"
+description = "Version Control System"
+documentation = "https://github.com/nkr413/rustix-vcs#readme"
+repository = "https://github.com/nkr413/rustix-vcs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,3 +12,12 @@ edition = "2021"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"
 rusqlite = { version = "0.27.0", features = ["bundled"] }
+
+[profile.release]
+opt-level = "z"
+panic = "abort"
+strip = true
+debug = false
+debug-assertions = false
+lto = false
+incremental = false
