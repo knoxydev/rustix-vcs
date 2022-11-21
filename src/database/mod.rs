@@ -1,20 +1,14 @@
-pub mod add {
-	#![allow(warnings)]
-
+pub mod get
+{
 	// PACKAGES
-	use std::result::Result;
-	use std::path::Path;
 	use std::fs::File;
 	use std::io::{self, prelude::*, BufReader};
-
-	use std::io::prelude::*;
-	use std::fs::OpenOptions;
 
 
 	const storagePATH : &str = "rustix/storage.txt";
 
 
-	fn get_data() -> Result<Vec<[String; 4]>, std::io::Error>
+	pub fn start() -> std::io::Result<Vec<[String; 4]>>
 	{
 		fn get_saves(x: String) -> [String; 4]
 		{
@@ -42,11 +36,25 @@ pub mod add {
 
 		Ok(SAVES_BASE)
 	}
+}
+
+pub mod add
+{
+	// PACKAGES
+	use std::path::Path;
+	use std::fs::File;
+	use std::io::{self, prelude::*, BufReader};
+
+	use std::io::prelude::*;
+	use std::fs::OpenOptions;
 
 
-	fn write_file(save_info: [String; 4]) -> Result<(), std::io::Error>
+	const storagePATH : &str = "rustix/storage.txt";
+
+
+	fn write_file(save_info: [String; 4]) -> std::io::Result<()>
 	{
-		let SAVES_BASE = get_data().unwrap();
+		let SAVES_BASE = crate::database::get::start().unwrap();
 		let mut UNIQUE_SAVE : bool = true;
 
 		for i in SAVES_BASE { if (i[1] == save_info[1]) { UNIQUE_SAVE = false; } }
@@ -64,9 +72,12 @@ pub mod add {
 
 
 	// START POINT
-	pub fn start(save_info: [String; 4])
+	pub fn start(save_info: [String; 4]) -> bool
 	{
-		if Path::new(storagePATH).exists() == true { write_file(save_info); }
-		else { println!("{:?}", false); }
+		if Path::new(storagePATH).exists() == true {
+			write_file(save_info);
+			return true;
+		}
+		else { return false; }
 	}
 }
