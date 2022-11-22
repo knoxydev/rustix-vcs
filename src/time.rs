@@ -1,6 +1,5 @@
-pub mod time_fn {
-	#![allow(warnings)]
-
+pub mod time_fn
+{
 	// PACKAGES
 	use std::process::Command;
 

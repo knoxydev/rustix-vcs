@@ -24,17 +24,17 @@ pub mod add_fn
 	{
 		crate::log::logger::start("ADD   ".to_string());
 
-		let TIME_DATE : [String; 2] = crate::time::time_fn::start();
+		let time_date : [String; 2] = crate::time::time_fn::start();
 
 		let save_info : [String; 4] = [
 			file_path.to_string(),
 			unq_name.to_string(),
-			TIME_DATE[0].to_string(),
-			TIME_DATE[1].to_string()];
+			time_date[0].to_string(),
+			time_date[1].to_string()];
 
 
-		let CREATE_COPY = crate::database::add::start(save_info);
-		if (CREATE_COPY == true) { create_save(&unq_name, &file_path); }
+		let create_copy = crate::database::add::start(save_info);
+		if create_copy == true { create_save(&unq_name, &file_path); }
 		else { println!(":("); }
 	}
 }

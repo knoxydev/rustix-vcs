@@ -1,8 +1,7 @@
 pub mod print_fn
 {
 	// PACKAGES
-	use std::fs::File;
-	use std::error::Error;
+	use std::fs;
 	use std::io::{prelude::*, BufReader};
 
 	use serde::{Deserialize, Serialize};
@@ -21,7 +20,6 @@ pub mod print_fn
 
 	pub fn print_commands() {
 		println!("Commands:\n");
-
 		println!("rustix-vcs init\n  command to initialize the project\n");
 		println!("rustix-vcs add src/main.js save_name\n  command to save the file.\n");
 		println!("rustix-vcs delete save_name\n  command to delete the save.\n");
@@ -34,7 +32,7 @@ pub mod print_fn
 
 
 	fn show_log() -> std::io::Result<()> {
-		let file = File::open("rustix/log.txt")?;
+		let file = fs::File::open("rustix/log.txt")?;
 		let reader = BufReader::new(file);
 		for line in reader.lines() { println!("{}", line?); }
 
@@ -43,8 +41,8 @@ pub mod print_fn
 
 
 	pub fn read_yaml() {
-		let f = File::open("rustix/init.yml").expect("Could not open file.");
-		let mut data: Config = serde_yaml::from_reader(f).expect("Couldn't read");
+		let f = fs::File::open("rustix/init.yml").expect("Could not open file.");
+		let data: Config = serde_yaml::from_reader(f).expect("Couldn't read");
 		
 		println!("INFO\n  os: {}\n  created date: {} - {}\n  current path: {}\n\n",
 			data.os_name, data.created_date, data.created_time, data.name);
@@ -52,10 +50,10 @@ pub mod print_fn
 
 
 	fn print_db() {
-		let SAVES_BASE = crate::database::get::start().unwrap();
+		let saves_base = crate::database::get::start().unwrap();
 		let mut id : i64 = 1;
 
-		for x in SAVES_BASE.into_iter() {
+		for x in saves_base.into_iter() {
 			println!("{}. {}\n   - path\n      {}\n   - saved\n      {}\n      {}\n",
 			id, x[1], x[0], x[2], x[3]);
 
