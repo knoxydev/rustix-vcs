@@ -52,7 +52,7 @@ pub mod add
 	const storagePATH : &str = "rustix/storage.txt";
 
 
-	fn write_file(save_info: [String; 4]) -> std::io::Result<()>
+	fn write_file(save_info: [String; 4]) -> bool
 	{
 		let SAVES_BASE = crate::database::get::start().unwrap();
 		let mut UNIQUE_SAVE : bool = true;
@@ -67,17 +67,11 @@ pub mod add
 			println!("Added !");
 		} else { println!("Such a name already exists !"); }
 
-		Ok(())
+		return UNIQUE_SAVE;
 	}
 
 
 	// START POINT
 	pub fn start(save_info: [String; 4]) -> bool
-	{
-		if Path::new(storagePATH).exists() == true {
-			write_file(save_info);
-			return true;
-		}
-		else { return false; }
-	}
+	{ if (Path::new(storagePATH).exists() == true) { return write_file(save_info); } else { return false; } }
 }
