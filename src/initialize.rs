@@ -26,16 +26,19 @@ pub mod init_fn
 	// START POINT
 	pub fn start() {
 		match fs::create_dir("rustix") {
-			Err(why) => println!("{:?} !", why.kind()),
+			Err(why) => {
+				println!("{:?} !", why.kind());
+				crate::log::logger::start("INIT -> ERROR".to_string());
+			}
 			Ok(_) => {
 				fs::File::create("rustix/log.txt");
 				fs::File::create("rustix/init.yml");
 				fs::File::create("rustix/storage.txt");
 				fs::create_dir("rustix/saves");
 				create_yaml();
+
+				crate::log::logger::start("INIT  ".to_string());
 			},
 		}
-
-		crate::log::logger::start("INIT  ".to_string());
 	}
 }

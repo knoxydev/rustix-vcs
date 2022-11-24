@@ -22,8 +22,6 @@ pub mod add_fn
 	// START POINT
 	pub fn start(file_path: &String, unq_name: &String)
 	{
-		crate::log::logger::start("ADD   ".to_string());
-
 		let time_date : [String; 2] = crate::time::time_fn::start();
 
 		let save_info : [String; 4] = [
@@ -34,7 +32,12 @@ pub mod add_fn
 
 
 		let create_copy = crate::database::add::start(save_info);
-		if create_copy == true { create_save(&unq_name, &file_path); }
-		else { println!(":("); }
+		if create_copy == true {
+			create_save(&unq_name, &file_path);
+			crate::log::logger::start("ADD   ".to_string());
+		} else {
+			println!(":(");
+			crate::log::logger::start("ADD -> ERROR".to_string());
+		}
 	}
 }

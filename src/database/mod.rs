@@ -104,7 +104,10 @@ pub mod del
 
 				match fs::remove_file(save_path) {
 					Err(error) => println!("{:?}", error.kind()),
-					Ok(_) => println!("The save was successfully deleted !"),
+					Ok(_) => {
+						println!("The save was successfully deleted !");
+						crate::log::logger::start("DELETE".to_string());
+					}
 				}
 			}
 
@@ -119,7 +122,10 @@ pub mod del
 					writeln!(file, "{}", res);
 				}
 			}
-		} else { println!("some error"); }
+		} else {
+			println!("Error when deleting. Something went wrong :(");
+			crate::log::logger::start("DELETE -> ERROR".to_string());
+		}
 	}
 
 
@@ -131,6 +137,25 @@ pub mod del
 
 pub mod slc
 {
+	// PACKAGES
+	use std::fs;
+	use std::io::Write;
+
+	pub fn write_content(file_path: &String, file_name: &String)
+	{
+		let new_file_name = format!("rustix/saves/{:02}.txt", file_name);
+		match fs::read_to_string(new_file_name) {
+			Err(error) => println!("{:?}", error.kind()),
+			Ok(x) => {
+				let mut f = fs::File::create(file_path).expect("Unable to create file");
+    		f.write_all(x.as_bytes()).expect("Unable to write data");
+
+    		println!("To a file {:?} moved saving {:?}", file_path, file_name);
+			},
+		}
+	}
+
+
 	pub fn start(save_name: &String) -> (bool, String)
 	{
 		let saves_base = crate::database::get::start().unwrap();
