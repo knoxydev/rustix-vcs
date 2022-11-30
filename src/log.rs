@@ -3,6 +3,7 @@ pub mod logger
 	use std::fs::OpenOptions;
 	use std::io::prelude::*;
 
+
 	pub fn start(action: String)
 	{
 		let time_date: [String; 2] = crate::time::time_fn::start();

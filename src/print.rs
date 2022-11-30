@@ -2,20 +2,8 @@ pub mod print_fn
 {
 	// PACKAGES
 	use std::fs;
+	use std::fs::File;
 	use std::io::{prelude::*, BufReader};
-
-	use serde::{Deserialize, Serialize};
-	use serde_yaml::{self};
-	// PACKAGES
-
-
-	#[derive(Debug, Serialize, Deserialize)]
-	struct Config {
-		name: String,
-		os_name: String,
-		created_date: String,
-		created_time: String,
-	}
 
 
 	pub fn print_commands() {
@@ -41,11 +29,37 @@ pub mod print_fn
 
 
 	pub fn read_yaml() {
-		let f = fs::File::open("rustix/init.yml").expect("Could not open file.");
-		let data: Config = serde_yaml::from_reader(f).expect("Couldn't read");
-		
-		println!("INFO\n  os: {}\n  created date: {} - {}\n  current path: {}\n\n",
-			data.os_name, data.created_date, data.created_time, data.name);
+		fn cut_data(x: String) -> String
+		{
+			let mut elem_start_point : i64 = 0;
+			let mut s = String::new();
+
+			for i in x.chars() {
+				if i == ':' { elem_start_point += 1; }
+				if elem_start_point >= 1 { s.push(i); }
+			}
+
+			s.remove(0);
+			s.remove(0);
+
+			return s;
+		}
+
+		fn get_data() -> std::io::Result<Vec<String>>
+		{
+			let file = File::open("rustix/init.txt")?;
+			let reader = BufReader::new(file);
+			let mut info_base = Vec::new();
+
+			for line in reader.lines() { info_base.push(cut_data(line.unwrap())); }
+
+			Ok(info_base)
+		}
+
+		let info : Vec<String> = get_data().unwrap();
+
+		println!("\nINFO\n  os: {}\n  created date: {} - {}\n  current path: {}\n\n",
+		info[1], info[3], info[2], info[0]);
 	}
 
 

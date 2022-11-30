@@ -17,7 +17,7 @@ pub mod init_fn
 
 		let info = format!("name: {folder}\nos_name: {os_name}\ncreated_date: {created_date}\ncreated_time: {created_time}");
 
-		fs::write("rustix/init.yml", info).expect("Unable to write file");
+		fs::write("rustix/init.txt", info).expect("Unable to write file");
 
 		println!("Initialized !");
 	}
@@ -32,7 +32,7 @@ pub mod init_fn
 			}
 			Ok(_) => {
 				fs::File::create("rustix/log.txt");
-				fs::File::create("rustix/init.yml");
+				fs::File::create("rustix/init.txt");
 				fs::File::create("rustix/storage.txt");
 				fs::create_dir("rustix/saves");
 				create_yaml();

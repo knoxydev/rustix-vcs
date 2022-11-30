@@ -8,10 +8,6 @@ repository = "https://github.com/nkr413/rustix-vcs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_yaml = "0.9"
-
 [profile.release]
 opt-level = "z"
 panic = "abort"
