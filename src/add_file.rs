@@ -30,7 +30,6 @@ pub mod add_fn
 			time_date[0].to_string(),
 			time_date[1].to_string()];
 
-
 		let create_copy = crate::database::add::start(save_info);
 		if create_copy == true {
 			create_save(&unq_name, &file_path);
