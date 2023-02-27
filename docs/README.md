@@ -1,6 +1,6 @@
 # rustix-vcs
 
-![rustix visual](https://github.com/nkr413/rustix-vcs/blob/main/docs/pics/rustix-visual-1.png)
+![rustix visual](https://github.com/knoxydev/rustix-vcs/blob/main/docs/pics/rustix-visual-1.png)
 
 ## Compiling
 
@@ -19,7 +19,7 @@ cargo build --release
 
 ## Installation
 
-You can download the .exe file or the source code on the [releases page](github.com/nkr413/rustix-vcs/releases)
+You can download the .exe file or the source code on the [releases page](github.com/knoxydev/rustix-vcs/releases)
 
 ## Usage
 
